@@ -4,7 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', 
+  base: '/',
   build: {
     outDir: 'build',
     rollupOptions: {
@@ -23,7 +23,13 @@ export default defineConfig({
       }
     },
     chunkSizeWarningLimit: 2000,
+  },
+  server: {
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/$/, to: '/accueil' },
+        { from: /./, to: '/index.html' }
+      ]
+    }
   }
 })
-
-

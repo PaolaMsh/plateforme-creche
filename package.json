@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prebuild": "rm -rf build",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp static.json build/",
     "lint": "eslint .",
     "preview": "vite preview"
   },

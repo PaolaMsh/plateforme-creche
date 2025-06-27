@@ -24,6 +24,16 @@ const Profil = lazy(() => import('./pages/profil'));
 const AddNusery = lazy(() => import('./pages/ajoutcreche'));
 const Detailsenfant = lazy(() => import('./pages/detailsenfant'));
 
+const RootRedirect = () => {
+    useEffect(() => {
+        // Redirection côté client pour les cas où le serveur ne l'aurait pas géré
+        if (window.location.pathname === '/') {
+            window.location.replace('/accueil')
+        }
+    }, [])
+    return null
+}
+
 const AppRoutes = () => (
     <Routes>
         {/* Routes publiques */}
@@ -43,9 +53,11 @@ const AppRoutes = () => (
                 </Suspense>
             }
         />
+        {/* Redirection explicite */}
+        <Route path="/" element={<RootRedirect />} />
         <Route
-        path="/"
-        element={<Navigate to="/accueil" replace />}
+            path="/"
+            element={<Navigate to="/accueil" replace />}
         />
         <Route
             path="/accueil"
