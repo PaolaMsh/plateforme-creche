@@ -1,15 +1,13 @@
 services:
-  - type: web
+  - type: web  # ← Doit absolument être 'web' et non 'static'
     name: plateforme-creche
     env: node
-    repo: https://github.com/PaolaMsh/plateforme-creche
-    branch: main
+    runtime: node  # Nouvelle ligne cruciale
     buildCommand: npm run build
     installCommand: npm install
     staticPublishPath: ./build
     routes:
       - path: /
-        static: /build/index.html
         headers:
           Location: /accueil
         status: 301
@@ -18,6 +16,8 @@ services:
       - path: /*
         static: /build/index.html
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: NODE_ENV
         value: production
       - key: VITE_API_URL
