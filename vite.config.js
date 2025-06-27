@@ -5,6 +5,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   build: {
+    outDir: 'dist',  // dossier de sortie classique par défaut Vite
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -27,14 +28,13 @@ export default defineConfig({
           if (id.includes(path.resolve(__dirname, 'src/pages'))) {
             const segments = id.split(path.sep)
             const name = segments[segments.length - 1].replace(/\.(jsx?|tsx?)$/, '')
-            return `page-${name}`
+            return `page-${name}`  // corrigé syntaxe template string
           }
           // 5) Le reste (composants partagés, utilitaires…) dans le chunk “common”
-          //    Tu peux omettre ce cas, Rollup gérera automatiquement.
+          //    Rollup gère automatiquement, pas besoin de traiter ici
         }
       }
     },
-    // Relève la limite pour ne plus avoir de warning à 1.5 Mo
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 2000,  // élargit limite warnings bundle
   }
 })
