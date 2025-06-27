@@ -6,7 +6,7 @@ services:
     branch: main
     installCommand: npm install --include=dev
     buildCommand: npm run build
-    staticPublishPath: build
+    staticPublishPath: dist
     routes:
       - type: redirect
         source: "/*"
