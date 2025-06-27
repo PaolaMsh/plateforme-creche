@@ -1,12 +1,11 @@
 services:
   - type: web
     name: plateforme-creche
-    env: static  # ⬅ Ne surtout pas mettre "node", ici on simule une static app
+    env: node
     buildCommand: npm run build
+    startCommand: serve -s build
     staticPublishPath: build
-    routes:
-      - path: /*
-        static: index.html
+    installCommand: npm install
     envVars:
       - key: VITE_API_URL
         value: https://stage-backend-c4pz.onrender.com/api/client/
