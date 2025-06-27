@@ -1,11 +1,10 @@
 services:
   - type: web
     name: plateforme-creche
-    env: static
     repo: https://github.com/PaolaMsh/plateforme-creche
     branch: main
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    staticPublishPath: build
     routes:
       - type: redirect
         source: "/*"
@@ -19,6 +18,6 @@ services:
       - key: VITE_STATIC_URL
         value: https://stage-backend-c4pz.onrender.com/
     regions:
-      - oregon  # ou votre région préférée
+      - oregon
     disk: 1
     plan: free
