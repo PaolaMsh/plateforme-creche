@@ -4,7 +4,8 @@ services:
     env: static
     repo: https://github.com/PaolaMsh/plateforme-creche
     branch: main
-    buildCommand: npm install && npm run build
+    installCommand: npm install --include=dev
+    buildCommand: npm run build
     staticPublishPath: build
     routes:
       - type: redirect
