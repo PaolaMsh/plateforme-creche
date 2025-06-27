@@ -17,4 +17,4 @@ services:
       - key: VITE_API_URL
         value: https://stage-backend-c4pz.onrender.com/api/client/
       - key: VITE_STATIC_URL
-        value: https://stage-backend-c4pz.onrender.com/
+        value: https://stage-backend-c4pz.onrender.com
