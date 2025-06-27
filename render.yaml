@@ -1,6 +1,3 @@
-
-
-
 services:
   - type: web
     name: plateforme-creche
@@ -11,11 +8,15 @@ services:
     installCommand: npm install
     staticPublishPath: ./build
     routes:
+      - path: /
+        static: /build/index.html
+        headers:
+          Location: /accueil
+        status: 301
       - path: /accueil
         static: /build/index.html
       - path: /*
         static: /build/index.html
-        rewrite: true
     envVars:
       - key: NODE_ENV
         value: production

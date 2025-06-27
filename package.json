@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "prebuild": "rm -rf build",
     "dev": "vite",
-    "build": "vite build && cp static.json build/",
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "clean": "rm -rf build",
+    "prebuild": "npm run clean"
   },
   "dependencies": {
     "@faker-js/faker": "^9.8.0",
