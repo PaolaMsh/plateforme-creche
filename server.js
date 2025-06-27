@@ -2,15 +2,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Sert les fichiers statiques depuis le dossier build
+// Sert les fichiers statiques générés par Vite
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Redirection de la racine vers /accueil
-app.get('/', (req, res) => {
-  res.redirect(301, '/accueil');
-});
-
-// Toutes les autres routes renvoient index.html (SPA fallback)
+// Pour toutes les routes restantes, retourne index.html (fallback SPA)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
