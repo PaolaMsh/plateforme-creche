@@ -1,0 +1,31 @@
+# netlify.toml
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Pour garantir que toutes les routes de ton SPA
+# pointent vers index.html au lieu de renvoyer une 404
+# ↑ garde bien cette partie au début de netlify.toml
+[[redirects]]
+  from     = "/"         # la racine
+  to       = "/accueil"  # la page d'accueil
+  status   = 301         # redirection permanente
+
+# puis ta règle SPA catch-all
+[[redirects]]
+  from     = "/*"
+  to       = "/index.html"
+  status   = 200
+
+
+# (Optionnel) En-têtes HTTP pour mettre en cache JS et CSS
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
