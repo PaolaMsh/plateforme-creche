@@ -1,16 +1,12 @@
 services:
-  - type: web
+  - type: static
     name: plateforme-creche
-    env: static
+    env: node
     repo: https://github.com/PaolaMsh/plateforme-creche
     branch: main
-    installCommand: npm install --include=dev
     buildCommand: npm run build
+    installCommand: npm install
     staticPublishPath: dist
-    routes:
-      - type: redirect
-        source: "/*"
-        destination: /index.html
     envVars:
       - key: NODE_ENV
         value: production
