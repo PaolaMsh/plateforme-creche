@@ -1,14 +1,9 @@
 services:
-  - type: web
+  - type: static
     name: plateforme-creche
-    env: node
-    runtime: node
     buildCommand: npm run build
-    startCommand: npm run start
-    installCommand: npm install
+    staticPublishPath: build
     envVars:
-      - key: NODE_ENV
-        value: production
       - key: VITE_API_URL
         value: https://stage-backend-c4pz.onrender.com/api/client/
       - key: VITE_STATIC_URL

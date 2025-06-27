@@ -4,7 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: '/', // Assure les chemins absolus
   build: {
     outDir: 'build',
     emptyOutDir: true,
@@ -24,5 +24,8 @@ export default defineConfig({
       }
     },
     chunkSizeWarningLimit: 2000
+  },
+  server: {
+    historyApiFallback: true  // ← C’est ça qui fait marcher le fallback en local
   }
 });
