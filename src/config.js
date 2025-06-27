@@ -1,7 +1,6 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+const config = {
+  API_BASE_URL: import.meta.env.VITE_API_URL,    // par exemple : https://api.monsite.com
+  MEDIA_BASE_URL: import.meta.env.VITE_STATIC_URL // par exemple : https://cdn.monsite.com
+};
 
-export default defineConfig({
-  plugins: [react()],
-  base: '/', // Très important pour le déploiement sur Netlify
-});
+export default config;

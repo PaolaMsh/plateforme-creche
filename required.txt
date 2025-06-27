@@ -1,0 +1,15 @@
+# Outil CLI (installation globale)
+render-cli
+
+# Dépendances runtime
+axios
+react
+react-dom
+react-router-dom
+@faker-js/faker
+@fortawesome/fontawesome-svg-core
+@fortawesome/free-brands-svg-icons
+@fortawesome/free-regular-svg-icons
+@fortawesome/free-solid-svg-icons
+@fortawesome/react-fontawesome
+react-icons
