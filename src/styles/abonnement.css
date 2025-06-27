@@ -1,0 +1,198 @@
+/* styles/abonnement.css */
+
+.subscription-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    color: #333;
+}
+
+.subscription-container .subscription-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.subscription-container .subscription-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.subscription-container .subscription-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.subscription-container .subscription-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    border-top: 4px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subscription-container .subscription-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.subscription-container .subscription-card.active {
+    border-top-color: #4CAF50;
+}
+
+.subscription-container .subscription-card.expired {
+    border-top-color: #9E9E9E;
+}
+
+.subscription-container .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.subscription-container .card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.subscription-container .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.subscription-container .badge.active {
+    background-color: #E8F5E9;
+    color: #4CAF50;
+}
+
+.subscription-container .badge.expired {
+    background-color: #F5F5F5;
+    color: #9E9E9E;
+}
+
+.subscription-container .card-details {
+    margin-bottom: 1.5rem;
+}
+
+.subscription-container .card-details p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.subscription-container .card-details strong {
+    color: #333;
+    font-weight: 500;
+}
+
+.subscription-container .card-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.subscription-container .card-actions.single-action {
+    justify-content: center;
+}
+
+
+.subscription-container .action-link {
+    flex: 1;
+    text-decoration: none;
+}
+
+.subscription-container .card-actions button{
+    display: block;
+    padding: 6px 10px;
+}
+
+.btn-renewed {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: default;
+}
+
+.s.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* semi-transparent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* très haut pour être au-dessus de tout */
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px 20px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.menu-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+}
+
+.menu-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-button.confirm {
+    background-color: #4ecdc4;
+    color: white;
+}
+
+.menu-button.cancel {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .subscription-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+}
