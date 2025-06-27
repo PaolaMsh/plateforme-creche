@@ -5,7 +5,6 @@ services:
     buildCommand: npm run build
     startCommand: serve -s build
     staticPublishPath: build
-    installCommand: npm install
     envVars:
       - key: VITE_API_URL
         value: https://stage-backend-c4pz.onrender.com/api/client/
