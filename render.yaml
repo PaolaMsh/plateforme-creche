@@ -6,7 +6,7 @@ services:
     branch: main
     buildCommand: npm run build
     installCommand: npm install
-    staticPublishPath: dist
+    staticPublishPath: ./build
     envVars:
       - key: NODE_ENV
         value: production
