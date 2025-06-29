@@ -3,7 +3,7 @@ services:
     name: plateforme-creche
     env: node
     buildCommand: npm run build
-    startCommand: serve -s dist
+    startCommand:  dist
     envVars:
       - key: VITE_API_URL
         value: https://stage-backend-c4pz.onrender.com/api/client/
