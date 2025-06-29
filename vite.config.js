@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/', // Assure les chemins absolus
   build: {
-    outDir: 'build',
+    outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
       output: {
