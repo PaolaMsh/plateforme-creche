@@ -1,7 +1,7 @@
 services:
   - type: web
     name: plateforme-creche
-    env: node
+    env: static
     buildCommand: npm run build
     startCommand:  dist
     envVars:
