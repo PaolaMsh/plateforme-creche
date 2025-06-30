@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "build": "vite build",
-    "start": "serve -s dist",
-    "dev": "vite"
+    "serve": "vite preview"
   },
   "dependencies": {
     "@faker-js/faker": "^9.8.0",
