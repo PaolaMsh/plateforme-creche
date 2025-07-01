@@ -1,6 +1,6 @@
 import Header from "../components/headerParent";
 import Footer from "../components/footer";
-// MainLayout.js
+// DefaultLayout.jsx
 
 
 
