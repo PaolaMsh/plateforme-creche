@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <!-- Pour forcer le mode standards et éviter le Quirks Mode -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -15,12 +16,21 @@
 
     <!-- Si besoin d’une base différente, sinon vous pouvez retirer -->
     <!-- <base href="/" /> -->
-  </head>
-  <body>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+</style>
+
+<body>
     <!-- Racine de React -->
     <div id="root"></div>
 
     <!-- Script principal généré par Vite -->
     <script type="module" src="/src/main.jsx"></script>
-  </body>
+</body>
+
 </html>
