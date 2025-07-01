@@ -4,7 +4,6 @@ import config from "../config";
 import axios from 'axios';
 import '../styles/auth.css';
 
-
 const SignUpForm = () => {
     const initialState = {
         username: '',
@@ -59,11 +58,11 @@ const SignUpForm = () => {
                 }
             );
 
-            setSuccess("Inscription réussie !");
+            setSuccess("Inscription réussie ! Redirection en cours...");
             setFormData(initialState);
             setTimeout(() => navigate('/auth-login'), 2000);
         } catch (err) {
-            setError(err.response?.data?.error || 'Erreur lors de l’inscription.');
+            setError(err.response?.data?.error || 'Erreur lors de l\'inscription. Veuillez réessayer.');
         } finally {
             setIsLoading(false);
         }
@@ -73,9 +72,8 @@ const SignUpForm = () => {
         <div className="auth-container">
             <h2>Créer un compte</h2>
 
-            {isLoading && <div className="loading-bar"></div>}
             {error && <div className="alert alert-error">{error}</div>}
-            {success && <p className="alert alert-success">{success}</p>}
+            {success && <div className="alert alert-success">{success}</div>}
 
             <form onSubmit={handleSubmit}>
                 <input
@@ -103,7 +101,7 @@ const SignUpForm = () => {
                     required
                 />
 
-                <div style={{ position: 'relative' }}>
+                <div className="input-group">
                     <input
                         type={showPassword1 ? 'text' : 'password'}
                         name="password1"
@@ -111,26 +109,17 @@ const SignUpForm = () => {
                         value={formData.password1}
                         onChange={handleChange}
                         required
-                        style={{ paddingRight: '45px' }}
                     />
                     <img
-                        src={showPassword1 ? '/ouvert.png' : '/fermer.jpg'}
-                        alt="ouvert/fermer"
+                        src={showPassword1 ? '/eye-off.svg' : '/eye.svg'}
+                        className="password-toggle"
+                        alt="Toggle password"
                         onClick={() => setShowPassword1(!showPassword1)}
-                        style={{
-                            position: 'absolute',
-                            top: '50%',
-                            right: '10px',
-                            transform: 'translateY(-15%)',
-                            width: '24px',
-                            height: '24px',
-                            cursor: 'pointer'
-                        }}
                         title={showPassword1 ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                     />
                 </div>
 
-                <div style={{ position: 'relative' }}>
+                <div className="input-group">
                     <input
                         type={showPassword2 ? 'text' : 'password'}
                         name="password2"
@@ -138,36 +127,31 @@ const SignUpForm = () => {
                         value={formData.password2}
                         onChange={handleChange}
                         required
-                        style={{ paddingRight: '45px' }}
                     />
                     <img
-                        src={showPassword2 ? '/ouvert.png' : '/fermer.jpg'}
-                        alt="ouvert/fermer"
+                        src={showPassword2 ? '/eye-off.svg' : '/eye.svg'}
+                        className="password-toggle"
+                        alt="Toggle password"
                         onClick={() => setShowPassword2(!showPassword2)}
-                        style={{
-                            position: 'absolute',
-                            top: '50%',
-                            right: '10px',
-                            transform: 'translateY(-15%)',
-                            width: '24px',
-                            height: '24px',
-                            cursor: 'pointer'
-                        }}
                         title={showPassword2 ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                     />
                 </div>
 
-                <button className='btn-primary' type="submit" disabled={isLoading}>
-                    {isLoading ? "Création du compte..." : "S'inscrire"}
+                <button className="btn-primary" type="submit" disabled={isLoading}>
+                    {isLoading ? (
+                        <>
+                            <span className="loading-spinner"></span>
+                            Création en cours...
+                        </>
+                    ) : "S'inscrire"}
                 </button>
             </form>
 
-            <p style={{ textAlign: 'center', marginTop: '30px' }}>
-                J'ai déjà un compte. <Link to="/auth-login">Se connecter</Link>
-            </p>
+            <div className="auth-links">
+                <p>Déjà un compte ? <Link to="/auth-login">Se connecter</Link></p>
+            </div>
         </div>
     );
 };
 
 export default SignUpForm;
-

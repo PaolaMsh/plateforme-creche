@@ -195,7 +195,7 @@ const CrecheGarderie = () => {
                                 }} 
                                 className='reset-filters-button'
                             >
-                                Réinitialiser les filtres
+                                Rafraichir
                             </button>
                         </div>
                     )}

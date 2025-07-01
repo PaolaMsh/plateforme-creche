@@ -64,10 +64,8 @@ const CrecheDetails = () => {
             try {
                 const [nurseryRes, plansRes] = await Promise.all([
                     fetch(`${config.API_BASE_URL}mynursery/${id}/`, {
-                        headers: { Authorization: `Bearer ${token}` },
                     }),
-                    fetch(`${config.API_BASE_URL}mynursery/${id}/plans/`, {
-                        headers: { Authorization: `Bearer ${token}` },
+                    fetch(`${config.API_BASE_URL}mynursery/${id}/myplans/`, {
                     }),
                 ]);
 

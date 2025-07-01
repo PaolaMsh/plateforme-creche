@@ -39,21 +39,18 @@ const LoginPage = () => {
         setIsLoading(false);
 
         if (result.success) {
-            const from = location.state?.from?.pathname || '/accueil'; // <- SEULE MODIFICATION
+            const from = location.state?.from?.pathname || '/accueil';
             navigate(from, { replace: true });
         } else {
             switch (result.status) {
                 case 401:
-                    setError("Nom d'utilisateur ou mot de passe incorrect.");
+                    setError("Identifiants incorrects. Veuillez réessayer.");
                     break;
                 case 400:
                     setError("Requête invalide. Vérifiez les champs.");
                     break;
-                case 500:
-                    setError("Erreur serveur. Veuillez réessayer plus tard.");
-                    break;
                 default:
-                    setError(result.message || "Une erreur s'est produite.");
+                    setError(result.message || "Une erreur s'est produite. Veuillez réessayer.");
             }
         }
     };
@@ -62,7 +59,6 @@ const LoginPage = () => {
         <div className="auth-container">
             <h2>Connexion</h2>
 
-            {isLoading && <div className="loading-bar"></div>}
             {error && <div className="alert alert-error">{error}</div>}
 
             <form onSubmit={handleSubmit}>
@@ -75,7 +71,7 @@ const LoginPage = () => {
                     required
                 />
 
-                <div style={{ position: 'relative' }}>
+                <div className="input-group">
                     <input
                         type={showPassword ? 'text' : 'password'}
                         name="password"
@@ -83,59 +79,30 @@ const LoginPage = () => {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        style={{ paddingRight: '40px' }}
                     />
-
-                    {/* Icône œil ouvert */}
                     <img
-                        src="/ouvert.png"
-                        alt="ouvert"
-                        onClick={() => setShowPassword(true)}
-                        style={{
-                            position: 'absolute',
-                            right: '10px',
-                            top: '50%',
-                            transform: 'translateY(-15%)',
-                            cursor: 'pointer',
-                            width: '24px',
-                            height: '24px',
-                            userSelect: 'none',
-                            display: showPassword ? 'none' : 'block'
-                        }}
-                        title="Afficher le mot de passe"
-                    />
-
-                    {/* Icône œil fermé */}
-                    <img
-                        src="/fermer.jpg"
-                        alt="fermer"
-                        onClick={() => setShowPassword(false)}
-                        style={{
-                            position: 'absolute',
-                            right: '10px',
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            cursor: 'pointer',
-                            width: '24px',
-                            height: '24px',
-                            userSelect: 'none',
-                            display: showPassword ? 'block' : 'none',
-                        }}
-                        title="Masquer le mot de passe"
+                        src={showPassword ? '/eye-off.svg' : '/eye.svg'}
+                        className="password-toggle"
+                        alt="Toggle password"
+                        onClick={() => setShowPassword(!showPassword)}
+                        title={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                     />
                 </div>
 
-                <button className='btn-primary' type="submit" disabled={isLoading}>
-                    {isLoading ? 'Connexion...' : 'Se connecter'}
+                <button className="btn-primary" type="submit" disabled={isLoading}>
+                    {isLoading ? (
+                        <>
+                            <span className="loading-spinner"></span>
+                            Connexion...
+                        </>
+                    ) : "Se connecter"}
                 </button>
             </form>
 
-            <p style={{ textAlign: 'center', marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
-                Je n'ai pas de compte. <span style={{ marginLeft: '5px' }}><Link to="/auth-register">S'inscrire</Link></span>
-            </p>
-            <p style={{ textAlign: 'center', marginTop: '-20px' }}>
-                <Link to="/auth-reset">Mot de passe oublié</Link>
-            </p>
+            <div className="auth-links">
+                <p>Pas de compte ? <Link to="/auth-register">S'inscrire</Link></p>
+                <p><Link to="/auth-reset">Mot de passe oublié ?</Link></p>
+            </div>
         </div>
     );
 };
