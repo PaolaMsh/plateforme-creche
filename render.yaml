@@ -1,10 +1,12 @@
 # render.yaml
 services:
-  - type: static          # on passe en static site
+  - type: static          # site statique
     name: plateforme-creche
-    branch: main          # branche que Render doit surveiller
+    branch: main          # branche surveillée pour déploiement
     buildCommand: npm ci && npm run build
-    publishPath: dist     # dossier à servir
-    env:                   # variables injectées au build time
-      VITE_API_URL: https://stage-backend-c4pz.onrender.com/api/client/
-      VITE_STATIC_URL: https://stage-backend-c4pz.onrender.com
+    staticPublishPath: dist     # dossier à servir (corrigé de publishPath)
+    envVars:                   # variables d’environnement (nom correct)
+      - key: VITE_API_URL
+        value: https://stage-backend-c4pz.onrender.com/api/client/
+      - key: VITE_STATIC_URL
+        value: https://stage-backend-c4pz.onrender.com
