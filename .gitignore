@@ -5,11 +5,12 @@ node_modules/
 #dist/
 
 # Environnements locaux
-.env
+
 
 # Logs
 npm-debug.log*
 pnpm-debug.log*
+
 yarn-debug.log*
 yarn-error.log*
 
