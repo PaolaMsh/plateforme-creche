@@ -88,7 +88,7 @@ const CrecheGarderie = () => {
             <div className='search-container'>
                 <h1>Trouver une crèche</h1>
                 <p className='subtitle'>Recherchez la crèche qui correspond à vos besoins</p>
-                
+
                 <form className='search-form' onSubmit={handleSearchSubmit}>
                     <div className='search-input-group'>
                         <FontAwesomeIcon icon={faSearch} className='search-icon' />
@@ -115,7 +115,7 @@ const CrecheGarderie = () => {
                         <span>Aucun résultat</span>
                     )}
                 </div>
-                
+
                 <div className='filter-group'>
                     <label htmlFor="location-filter" className='filter-label'>Filtrer par ville :</label>
                     <select
@@ -135,9 +135,32 @@ const CrecheGarderie = () => {
             </div>
 
             {loading && (
-                <div className="loading-indicator">
-                    <div className="spinner"></div>
-                    <p>Chargement en cours...</p>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+                }}>
+                    <div style={{ textAlign: 'center' }}>
+                        <div style={{
+                            width: '50px',
+                            height: '50px',
+                            border: '5px solid #f3f3f3',
+                            borderTop: '5px solid #3f51b5',
+                            borderRight: '5px solid #3f51b5',
+                            borderRadius: '50%',
+                            animation: 'spin 1s linear infinite',
+                            margin: '0 auto'
+                        }} />
+                        <p style={{
+                            marginTop: '20px',
+                            color: '#3f51b5',
+                            fontFamily: 'Arial, sans-serif',
+                            fontSize: '1.2rem',
+                            fontWeight: '500'
+                        }}>Chargement en cours...</p>
+                    </div>
                 </div>
             )}
 
@@ -186,13 +209,13 @@ const CrecheGarderie = () => {
                     ) : (
                         <div className="no-results">
                             <p>Aucune crèche ne correspond à votre recherche "{searchParams.get("name")}"</p>
-                            <button 
+                            <button
                                 onClick={() => {
                                     setSearchTerm('');
                                     setLocationFilter('');
                                     setSearchParams({});
                                     fetchCreches();
-                                }} 
+                                }}
                                 className='reset-filters-button'
                             >
                                 Rafraichir
@@ -204,21 +227,21 @@ const CrecheGarderie = () => {
 
             {totalResults > resultsPerPage && (
                 <div className="pagination-container">
-                    <button 
-                        onClick={() => handlePageChange(page - 1)} 
+                    <button
+                        onClick={() => handlePageChange(page - 1)}
                         disabled={page === 1}
                         className='pagination-button'
                     >
                         <FontAwesomeIcon icon={faChevronLeft} />
                         Précédent
                     </button>
-                    
+
                     <div className='page-indicator'>
                         Page {page} sur {Math.ceil(totalResults / resultsPerPage)}
                     </div>
-                    
-                    <button 
-                        onClick={() => handlePageChange(page + 1)} 
+
+                    <button
+                        onClick={() => handlePageChange(page + 1)}
                         disabled={page >= Math.ceil(totalResults / resultsPerPage)}
                         className='pagination-button'
                     >

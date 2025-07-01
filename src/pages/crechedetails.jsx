@@ -7,21 +7,21 @@ import '../styles/crechedetails.css';
 const DAY_LABELS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
 const Toast = ({ message, type, onClose }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose();
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [onClose]);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onClose();
+        }, 5000);
+        return () => clearTimeout(timer);
+    }, [onClose]);
 
-  return (
-    <div className={`toast ${type}`}>
-      <div className="toast-content">
-        <span className="toast-message">{message}</span>
-        <button className="toast-close" onClick={onClose}>&times;</button>
-      </div>
-    </div>
-  );
+    return (
+        <div className={`toast ${type}`}>
+            <div className="toast-content">
+                <span className="toast-message">{message}</span>
+                <button className="toast-close" onClick={onClose}>&times;</button>
+            </div>
+        </div>
+    );
 };
 
 const CrecheDetails = () => {
@@ -116,51 +116,51 @@ const CrecheDetails = () => {
         );
     };
 
-const handleSubmitSubscription = async (e) => {
-    e.preventDefault();
+    const handleSubmitSubscription = async (e) => {
+        e.preventDefault();
 
-    if (selectedChildren.length === 0) {
-        addToast('Veuillez sélectionner au moins un enfant', 'warning');
-        return;
-    }
-
-    try {
-        setLoading(true);
-
-        const startDateValue = startNow
-            ? new Date().toISOString().split('T')[0]
-            : startDate;
-
-        const payload = {
-            start_date: startDateValue,
-            details: selectedChildren.map(id => ({ child: id }))
-        };
-
-        const response = await fetch(`${config.API_BASE_URL}nursery/${id}/plans/${selectedPlan.id}/subscriptions/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept':'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData?.message || "Erreur lors de la souscription");
+        if (selectedChildren.length === 0) {
+            addToast('Veuillez sélectionner au moins un enfant', 'warning');
+            return;
         }
 
-        addToast('Souscription réussie !', 'success');
-        setShowSubscriptionForm(false);
-        resetForm();
+        try {
+            setLoading(true);
 
-    } catch (err) {
-        addToast(err.message || 'Une erreur est survenue lors de la souscription');
-    } finally {
-        setLoading(false);
-    }
-};
+            const startDateValue = startNow
+                ? new Date().toISOString().split('T')[0]
+                : startDate;
+
+            const payload = {
+                start_date: startDateValue,
+                details: selectedChildren.map(id => ({ child: id }))
+            };
+
+            const response = await fetch(`${config.API_BASE_URL}nursery/${id}/plans/${selectedPlan.id}/subscriptions/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData?.message || "Erreur lors de la souscription");
+            }
+
+            addToast('Souscription réussie !', 'success');
+            setShowSubscriptionForm(false);
+            resetForm();
+
+        } catch (err) {
+            addToast(err.message || 'Une erreur est survenue lors de la souscription');
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
     const handleCancelSubscription = () => {
@@ -169,9 +169,32 @@ const handleSubmitSubscription = async (e) => {
     };
 
     if (loading) return (
-        <div className="loading-container">
-            <div className="loading-spinner"></div>
-            <p>Chargement des informations...</p>
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)'
+        }}>
+            <div style={{ textAlign: 'center' }}>
+                <div style={{
+                    width: '50px',
+                    height: '50px',
+                    border: '5px solid #f3f3f3',
+                    borderTop: '5px solid #3f51b5',
+                    borderRight: '5px solid #3f51b5',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite',
+                    margin: '0 auto'
+                }} />
+                <p style={{
+                    marginTop: '20px',
+                    color: '#3f51b5',
+                    fontFamily: 'Arial, sans-serif',
+                    fontSize: '1.2rem',
+                    fontWeight: '500'
+                }}>Chargement en cours...</p>
+            </div>
         </div>
     );
 
@@ -347,7 +370,33 @@ const handleSubmitSubscription = async (e) => {
                             <div className="form-group">
                                 <label>Sélectionnez les enfants:</label>
                                 {loadingChildren ? (
-                                    <p>Chargement des enfants...</p>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        height: '100vh',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.8)'
+                                    }}>
+                                        <div style={{ textAlign: 'center' }}>
+                                            <div style={{
+                                                width: '50px',
+                                                height: '50px',
+                                                border: '5px solid #f3f3f3',
+                                                borderTop: '5px solid #3f51b5',
+                                                borderRight: '5px solid #3f51b5',
+                                                borderRadius: '50%',
+                                                animation: 'spin 1s linear infinite',
+                                                margin: '0 auto'
+                                            }} />
+                                            <p style={{
+                                                marginTop: '20px',
+                                                color: '#3f51b5',
+                                                fontFamily: 'Arial, sans-serif',
+                                                fontSize: '1.2rem',
+                                                fontWeight: '500'
+                                            }}>Chargement des enfants...</p>
+                                        </div>
+                                    </div>
                                 ) : children.length > 0 ? (
                                     <div className="children-checkboxes">
                                         {children.map(child => (
