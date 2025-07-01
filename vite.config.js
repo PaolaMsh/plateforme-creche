@@ -1,16 +1,13 @@
 // vite.config.js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',               // chemins absolus pour assets
+  base: '/',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     chunkSizeWarningLimit: 2000
   }
-  // pas besoin du 'server.historyApiFallback' en prod,
-  // le fallback est géré par public/_redirects
-})
+});
