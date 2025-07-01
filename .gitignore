@@ -17,6 +17,15 @@ yarn-error.log*
 node_modules/.vite/
 
 # System files
+
+
+
+
+
+
+
+
+
 .DS_Store
 Thumbs.db
 

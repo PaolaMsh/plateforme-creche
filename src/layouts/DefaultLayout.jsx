@@ -1,8 +1,6 @@
 import Header from "../components/headerParent";
 import Footer from "../components/footer";
 // MainLayout.js
-import { useAuth } from './authContext';
-import { useNavigate } from 'react-router-dom';
 
 
 
