@@ -290,7 +290,33 @@ const SuivreDetails = () => {
         }
     ];
 
-    if (loading) return <div className="subscription-container main">Chargement en cours...</div>;
+    if (loading) return <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)'
+    }}>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{
+                width: '50px',
+                height: '50px',
+                border: '5px solid #f3f3f3',
+                borderTop: '5px solid #3f51b5',
+                borderRight: '5px solid #3f51b5',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                margin: '0 auto'
+            }} />
+            <p style={{
+                marginTop: '20px',
+                color: '#3f51b5',
+                fontFamily: 'Arial, sans-serif',
+                fontSize: '1.2rem',
+                fontWeight: '500'
+            }}>Chargement en cours...</p>
+        </div>
+    </div>;
     if (error) return <div className="subscription-container main">Erreur: {error}</div>;
     if (!abonnement) return <div className="subscription-container main">Aucun abonnement trouvé</div>;
 
@@ -301,7 +327,7 @@ const SuivreDetails = () => {
             {/* Header Section */}
             <header className="subscription-header">
                 <h1>Détails de l'abonnement</h1>
-                {!isActive && <p className="inactive-notice" style={{color:'red'}}>Cet abonnement n'est plus actif</p>}
+                {!isActive && <p className="inactive-notice" style={{ color: 'red' }}>Cet abonnement n'est plus actif</p>}
                 <p className="subtitle">Suivi complet de votre abonnement {isActive ? "et des activités" : ""}</p>
             </header>
 

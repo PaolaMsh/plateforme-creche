@@ -41,7 +41,7 @@ const Abonnement = () => {
     const handleCancelSubscription = async () => {
         try {
             const response = await fetch(
-                `${config.API_BASE_URL}nursery/${currentSubscription.plan.nursery.id}/plans/${currentSubscription.plan.id}/subscriptions/${currentSubscription.id}/`, 
+                `${config.API_BASE_URL}nursery/${currentSubscription.plan.nursery.id}/plans/${currentSubscription.plan.id}/subscriptions/${currentSubscription.id}/`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -56,7 +56,7 @@ const Abonnement = () => {
                 throw new Error('Erreur lors de l\'annulation de l\'abonnement');
             }
 
-            setSubscriptions(subscriptions.map(sub => 
+            setSubscriptions(subscriptions.map(sub =>
                 sub.id === currentSubscription.id ? { ...sub, is_active: false } : sub
             ));
             setShowCancelConfirm(false);
@@ -71,7 +71,33 @@ const Abonnement = () => {
         return date.toLocaleDateString('fr-FR');
     };
 
-    if (loading) return <div className="subscription-container">Chargement en cours...</div>;
+    if (loading) return <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)'
+    }}>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{
+                width: '50px',
+                height: '50px',
+                border: '5px solid #f3f3f3',
+                borderTop: '5px solid #3f51b5',
+                borderRight: '5px solid #3f51b5',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                margin: '0 auto'
+            }} />
+            <p style={{
+                marginTop: '20px',
+                color: '#3f51b5',
+                fontFamily: 'Arial, sans-serif',
+                fontSize: '1.2rem',
+                fontWeight: '500'
+            }}>Chargement en cours...</p>
+        </div>
+    </div>;
     if (error) return <div className="subscription-container">Erreur: {error}</div>;
 
     return (
@@ -102,7 +128,7 @@ const Abonnement = () => {
                                     Détails
                                 </button>
                             </Link>
-                            
+
                             {subscription.is_active ? (
                                 <button
                                     className="btn btn-secondary"
@@ -149,7 +175,7 @@ const Abonnement = () => {
                 </div>
             )}
 
-            
+
         </div>
     )
 };
