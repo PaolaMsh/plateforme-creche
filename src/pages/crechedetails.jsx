@@ -66,7 +66,7 @@ const CrecheDetails = () => {
                     fetch(`${config.API_BASE_URL}mynursery/${id}/`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
-                    fetch(`${config.API_BASE_URL}nursery/${id}/plans/`, {
+                    fetch(`${config.API_BASE_URL}mynursery/${id}/plans/`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
                 ]);
