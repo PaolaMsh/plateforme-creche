@@ -549,7 +549,7 @@ const Profil = () => {
                         ) : (
                             <div className="empty-state">
                                 <p>Aucun abonnement actif pour le moment</p>
-                                <Link to="/creches" className="btn-primary">
+                                <Link to="/creche-garderie" className="btn-primary">
                                     Voir les crèches disponibles
                                 </Link>
                             </div>
