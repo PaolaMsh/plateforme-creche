@@ -155,7 +155,7 @@ const Profil = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!profilId) return;
-        
+
         setIsLoading(true);
         try {
             const payload = {
@@ -180,7 +180,7 @@ const Profil = () => {
             if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
 
             const updatedData = await response.json();
-            
+
             setFormData(prev => ({
                 ...prev,
                 nom: updatedData.user?.last_name || prev.nom,
