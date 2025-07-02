@@ -3,16 +3,16 @@ import { useAuth } from '../layouts/authContext';
 import config from '../config';
 import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faUser, 
-  faEdit, 
-  faSave, 
-  faEye, 
-  faTrashAlt, 
-  faPlusCircle,
-  faChild,
-  faCalendarAlt,
-  faIdCard
+import {
+    faUser,
+    faEdit,
+    faSave,
+    faEye,
+    faTrashAlt,
+    faPlusCircle,
+    faChild,
+    faCalendarAlt,
+    faIdCard
 } from '@fortawesome/free-solid-svg-icons';
 import '../styles/profil.css';
 
@@ -40,6 +40,7 @@ const Profil = () => {
         enfants: '',
         abonnements: ''
     });
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchProfil = async () => {
@@ -53,7 +54,7 @@ const Profil = () => {
                 });
 
                 if (!response.ok) throw new Error('Erreur lors du chargement du profil');
-                
+
                 const data = await response.json();
                 if (data.results?.length > 0) {
                     const profil = data.results[0];
@@ -68,7 +69,7 @@ const Profil = () => {
                 }
             } catch (error) {
                 console.error(error);
-                setMessages(prev => ({...prev, profil: 'Erreur lors du chargement du profil'}));
+                setMessages(prev => ({ ...prev, profil: 'Erreur lors du chargement du profil' }));
             }
         };
 
@@ -81,7 +82,7 @@ const Profil = () => {
                 });
 
                 if (!response.ok) throw new Error('Erreur lors de la récupération des enfants');
-                
+
                 const data = await response.json();
                 setEnfants(data.results?.map(child => ({
                     id: child.id,
@@ -91,7 +92,7 @@ const Profil = () => {
                 })) || []);
             } catch (error) {
                 console.error(error);
-                setMessages(prev => ({...prev, enfants: 'Erreur lors du chargement des enfants'}));
+                setMessages(prev => ({ ...prev, enfants: 'Erreur lors du chargement des enfants' }));
             }
         };
 
@@ -104,17 +105,16 @@ const Profil = () => {
                 });
 
                 if (!response.ok) throw new Error('Erreur lors de la récupération des abonnements');
-                
+
                 const data = await response.json();
-                
-                // Filtrer pour ne garder que les abonnements actifs
+
                 const activeAbonnements = data.results.filter(abonnement => abonnement.is_active);
-                
+
                 const formattedAbonnements = activeAbonnements.map(abonnement => ({
                     id: abonnement.id,
                     creche: abonnement.plan.nursery.name,
                     type: abonnement.plan.name,
-                    statut: 'Actif', // Tous sont actifs grâce au filtre
+                    statut: 'Actif',
                     dateDebut: new Date(abonnement.start_date).toLocaleDateString('fr-FR'),
                     dateFin: abonnement.end_date ? new Date(abonnement.end_date).toLocaleDateString('fr-FR') : 'En cours',
                     prix: abonnement.price,
@@ -130,7 +130,7 @@ const Profil = () => {
                 setAbonnements(formattedAbonnements);
             } catch (error) {
                 console.error(error);
-                setMessages(prev => ({...prev, abonnements: 'Erreur lors du chargement des abonnements'}));
+                setMessages(prev => ({ ...prev, abonnements: 'Erreur lors du chargement des abonnements' }));
             }
         };
 
@@ -143,7 +143,7 @@ const Profil = () => {
         if (!dateNaissance) return 0;
         const naissance = new Date(dateNaissance);
         const aujourdhui = new Date();
-        return (aujourdhui.getFullYear() - naissance.getFullYear()) * 12 
+        return (aujourdhui.getFullYear() - naissance.getFullYear()) * 12
             + aujourdhui.getMonth() - naissance.getMonth();
     };
 
@@ -154,6 +154,9 @@ const Profil = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!profilId) return;
+        
+        setIsLoading(true);
         try {
             const payload = {
                 user: {
@@ -165,10 +168,34 @@ const Profil = () => {
                 birthday: formData.dateNaissance,
             };
 
-            setMessages({...messages, profil: 'Profil mis à jour avec succès'});
+            const response = await fetch(`${config.API_BASE_URL}profil/${profilId}/`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+
+            const updatedData = await response.json();
+            
+            setFormData(prev => ({
+                ...prev,
+                nom: updatedData.user?.last_name || prev.nom,
+                prenom: updatedData.user?.first_name || prev.prenom,
+                email: updatedData.user?.email || prev.email,
+                telephone: updatedData.contact || prev.telephone,
+                dateNaissance: updatedData.birthday || prev.dateNaissance,
+            }));
+
+            setMessages({ ...messages, profil: 'Profil mis à jour avec succès' });
         } catch (error) {
-            console.error(error);
-            setMessages({...messages, profil: 'Erreur lors de la mise à jour'});
+            console.error('Erreur mise à jour profil:', error);
+            setMessages({ ...messages, profil: 'Échec de la mise à jour du profil' });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -183,7 +210,6 @@ const Profil = () => {
                 const cliddelet = {
                     existe: 0
                 };
-                // Suppression d'un enfant
                 const response = await fetch(`${config.API_BASE_URL}child/${itemToDelete.item.id}/`, {
                     method: 'PATCH',
                     headers: {
@@ -195,7 +221,7 @@ const Profil = () => {
 
                 if (response.ok) {
                     setEnfants(prev => prev.filter(e => e.id !== itemToDelete.item.id));
-                    setMessages({...messages, enfants: 'Enfant supprimé avec succès'});
+                    setMessages({ ...messages, enfants: 'Enfant supprimé avec succès' });
                 } else {
                     throw new Error('Échec de la suppression');
                 }
@@ -203,9 +229,8 @@ const Profil = () => {
                 const abndelet = {
                     is_active: false
                 };
-                // Suppression d'un abonnement
                 const response = await fetch(
-                    `${config.API_BASE_URL}nursery/${itemToDelete.item.nursery_id}/plans/${itemToDelete.item.plan_id}/subscriptions/${itemToDelete.item.id}/`, 
+                    `${config.API_BASE_URL}nursery/${itemToDelete.item.nursery_id}/plans/${itemToDelete.item.plan_id}/subscriptions/${itemToDelete.item.id}/`,
                     {
                         method: 'PATCH',
                         headers: {
@@ -218,7 +243,7 @@ const Profil = () => {
 
                 if (response.ok) {
                     setAbonnements(prev => prev.filter(a => a.id !== itemToDelete.item.id));
-                    setMessages({...messages, abonnements: 'Abonnement annulé avec succès'});
+                    setMessages({ ...messages, abonnements: 'Abonnement annulé avec succès' });
                 } else {
                     throw new Error('Échec de l\'annulation');
                 }
@@ -226,7 +251,7 @@ const Profil = () => {
         } catch (error) {
             console.error(error);
             setMessages(prev => ({
-                ...prev, 
+                ...prev,
                 [itemToDelete.type === 'enfant' ? 'enfants' : 'abonnements']: 'Erreur lors de la suppression'
             }));
         } finally {
@@ -238,8 +263,8 @@ const Profil = () => {
         if (type === 'enfant') {
             navigate(`/inscrireenfant/${item.id}`);
         } else {
-            navigate(`/suivredetails/${item.id}`, { 
-                state: { 
+            navigate(`/suivredetails/${item.id}`, {
+                state: {
                     abonnement: item,
                     enfants: item.enfants
                 }
@@ -254,9 +279,9 @@ const Profil = () => {
                     <div className="modal-content">
                         <h3>Confirmer la suppression</h3>
                         <p>
-                            Êtes-vous sûr de vouloir supprimer {itemToDelete?.type === 'enfant' ? 
-                            `l'enfant ${itemToDelete.item.nomComplet}` : 
-                            'cet abonnement'} ?
+                            Êtes-vous sûr de vouloir supprimer {itemToDelete?.type === 'enfant' ?
+                                `l'enfant ${itemToDelete.item.nomComplet}` :
+                                'cet abonnement'} ?
                         </p>
                         <div className="modal-actions">
                             <button onClick={() => setShowConfirmDialog(false)} className="btn-cancel">
@@ -280,18 +305,23 @@ const Profil = () => {
                         <p>{formData.email}</p>
                     </div>
                 </div>
-                
+
                 <div className="profile-actions">
                     {activeTab === 'informations' ? (
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             form="profile-form"
                             className="btn-primary"
+                            disabled={isLoading}
                         >
-                            <FontAwesomeIcon icon={faSave} /> Enregistrer
+                            {isLoading ? 'Enregistrement...' : (
+                                <>
+                                    <FontAwesomeIcon icon={faSave} /> Enregistrer
+                                </>
+                            )}
                         </button>
                     ) : (
-                        <button 
+                        <button
                             onClick={() => setActiveTab('informations')}
                             className="btn-secondary"
                         >
@@ -302,19 +332,19 @@ const Profil = () => {
             </div>
 
             <div className="profile-tabs">
-                <button 
+                <button
                     className={`tab ${activeTab === 'informations' ? 'active' : ''}`}
                     onClick={() => setActiveTab('informations')}
                 >
                     <FontAwesomeIcon icon={faIdCard} /> Informations
                 </button>
-                <button 
+                <button
                     className={`tab ${activeTab === 'enfants' ? 'active' : ''}`}
                     onClick={() => setActiveTab('enfants')}
                 >
                     <FontAwesomeIcon icon={faChild} /> Enfants ({enfants.length})
                 </button>
-                <button 
+                <button
                     className={`tab ${activeTab === 'abonnements' ? 'active' : ''}`}
                     onClick={() => setActiveTab('abonnements')}
                 >
@@ -323,11 +353,11 @@ const Profil = () => {
             </div>
 
             <div className="profile-content">
-                
+
                 {activeTab === 'informations' && (
                     <form id="profile-form" onSubmit={handleSubmit} className="info-section">
                         <h3>Informations personnelles</h3>
-                        
+
                         {messages.profil && (
                             <div className={`alert ${messages.profil.includes('succès') ? 'success' : 'error'}`}>
                                 {messages.profil}
@@ -345,7 +375,7 @@ const Profil = () => {
                                     required
                                 />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label>Prénom</label>
                                 <input
@@ -356,7 +386,7 @@ const Profil = () => {
                                     required
                                 />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label>Date de naissance</label>
                                 <input
@@ -366,7 +396,7 @@ const Profil = () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label>Email</label>
                                 <input
@@ -377,7 +407,7 @@ const Profil = () => {
                                     required
                                 />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label>Téléphone</label>
                                 <input
@@ -424,14 +454,14 @@ const Profil = () => {
                                                 <td>{enfant.age}</td>
                                                 <td>{enfant.dateInscription}</td>
                                                 <td className="actions">
-                                                    <button 
+                                                    <button
                                                         onClick={() => viewDetails(enfant, 'enfant')}
                                                         className="btn-icon"
                                                         title="Voir détails"
                                                     >
                                                         <FontAwesomeIcon icon={faEye} />
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleDeleteItem(enfant, 'enfant')}
                                                         className="btn-icon danger"
                                                         title="Supprimer"
@@ -496,14 +526,14 @@ const Profil = () => {
                                                     ))}
                                                 </td>
                                                 <td className="actions">
-                                                    <button 
+                                                    <button
                                                         onClick={() => viewDetails(abonnement, 'abonnement')}
                                                         className="btn-icon"
                                                         title="Voir détails"
                                                     >
                                                         <FontAwesomeIcon icon={faEye} />
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleDeleteItem(abonnement, 'abonnement')}
                                                         className="btn-icon danger"
                                                         title="Annuler"
