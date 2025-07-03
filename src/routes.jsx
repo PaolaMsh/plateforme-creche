@@ -55,6 +55,7 @@ const Profil = lazy(() => import('./pages/profil'));
 const AddNusery = lazy(() => import('./pages/ajoutcreche'));
 const Detailsenfant = lazy(() => import('./pages/detailsenfant'));
 
+
 const AppRoutes = () => {
     const navigate = useNavigate();
 
@@ -88,6 +89,7 @@ const AppRoutes = () => {
                 <Route path="/suivredetails/:id" element={<Suspense fallback={<Loading />}><DefaultLayout><Suivredetails /></DefaultLayout></Suspense>} />
                 <Route path="/inscrireenfant/:id" element={<Suspense fallback={<Loading />}><DefaultLayout><Inscrireenfant /></DefaultLayout></Suspense>} />
                 <Route path="/nounourapide" element={<Suspense fallback={<Loading />}><DefaultLayout><Nounourapide /></DefaultLayout></Suspense>} />
+
             </Route>
         </Routes>
     );

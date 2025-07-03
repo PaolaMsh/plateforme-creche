@@ -123,7 +123,11 @@
     gap: 0.5rem;
 }
 
-.profile-container .tab:hover, .tab.active {
+.profile-container .tab:hover {
+    color: #524BA4;
+}
+
+.profile-container .tab.active {
     color: #524BA4;
     border-bottom-color: #524BA4;
 }
