@@ -367,7 +367,7 @@ const SuivreDetails = () => {
                                 <p>{abonnement.price} FCFA</p>
                             </div>
                         </div>
-                        
+
                         <div className="info-item">
                             <FiInfo className="info-icon" />
                             <div>
@@ -518,11 +518,13 @@ const SuivreDetails = () => {
                                         required
                                     >
                                         <option value="">Sélectionnez une formule</option>
-                                        {availableFormulas.map(formula => (
-                                            <option key={formula.id} value={formula.id}>
-                                                {formula.name} ({formula.price} FCFA)
-                                            </option>
-                                        ))}
+                                        {availableFormulas
+                                            .filter(formula => formula.id !== abonnement.plan.id)
+                                            .map(formula => (
+                                                <option key={formula.id} value={formula.id}>
+                                                    {formula.name} ({formula.price} FCFA)
+                                                </option>
+                                            ))}
                                     </select>
                                 </div>
                                 <div className="modal-actions">

@@ -37,7 +37,6 @@
     justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
-        background: linear-gradient(135deg, var(--primary-color) 0%, #6C63FF 100%);
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 2rem;

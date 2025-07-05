@@ -80,6 +80,18 @@ body {
 .auth-container .input-group {
     position: relative;
     margin-bottom: 1.25rem;
+     display: flex; 
+    align-items: center;
+}
+
+.auth-container .input-group input {
+    width: 100%;
+    padding: 0.9rem 3rem 0.9rem 1rem; 
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    margin-bottom: 0; 
 }
 
 .auth-container .password-toggle {

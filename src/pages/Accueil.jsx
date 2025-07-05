@@ -1,4 +1,4 @@
-import '../styles/acceuil.css';
+import '../styles/accueil.css';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -197,7 +197,7 @@ const Accueil = () => {
                         <Link to="/inscrireenfant/0" className="cta-primary">
                             Commencer l'inscription
                         </Link>
-                        <Link to="/contact" className="cta-secondary">
+                        <Link to="/contact" className="cta-secondary" style={{color:'white'}}>
                             Nous contacter
                         </Link>
                     </div>

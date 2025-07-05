@@ -174,7 +174,7 @@ const Profil = () => {
             const aujourdhui = new Date();
             let age = aujourdhui.getFullYear() - dateNaissance.getFullYear();
             const mois = aujourdhui.getMonth() - dateNaissance.getMonth();
-            
+
             if (mois < 0 || (mois === 0 && aujourdhui.getDate() < dateNaissance.getDate())) {
                 age--;
             }
@@ -425,10 +425,10 @@ const Profil = () => {
                                     max={new Date(new Date().setFullYear(new Date().getFullYear() - 14)).toISOString().split('T')[0]}
                                     required
                                 />
-                                {formData.dateNaissance && 
+                                {formData.dateNaissance &&
                                     new Date().getFullYear() - new Date(formData.dateNaissance).getFullYear() < 14 && (
-                                    <p className="error-text">Vous devez avoir au moins 14 ans</p>
-                                )}
+                                        <p className="error-text">Vous devez avoir au moins 14 ans</p>
+                                    )}
                             </div>
 
                             <div className="form-group">
