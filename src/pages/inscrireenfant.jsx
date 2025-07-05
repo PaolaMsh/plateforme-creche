@@ -20,6 +20,23 @@ const InscrireEnfant = () => {
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('');
 
+    useEffect(() => {
+        let timer;
+        if (message) {
+            timer = setTimeout(() => {
+                setMessage('');
+                setMessageType('');
+            }, 3000);
+        }
+        return () => clearTimeout(timer);
+    }, [message]);
+
+    useEffect(() => {
+        if (enfantId !== 0) {
+            chargerEnfant();
+        }
+    }, [enfantId]);
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -66,12 +83,6 @@ const InscrireEnfant = () => {
         }
     };
 
-    useEffect(() => {
-        if (enfantId !== 0) {
-            chargerEnfant();
-        }
-    }, [enfantId]);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { nom, prenom, age, particularite } = formData;
@@ -105,6 +116,16 @@ const InscrireEnfant = () => {
                 if (response.ok) {
                     setMessage(enfantId === 0 ? "Inscription réussie !" : "Modifications enregistrées !");
                     setMessageType('success');
+                    
+                    // Vider le formulaire seulement pour une nouvelle inscription
+                    if (enfantId === 0) {
+                        setFormData({
+                            nom: '',
+                            prenom: '',
+                            age: '',
+                            particularite: ''
+                        });
+                    }
                 } else {
                     const errorData = await response.json();
                     setMessage("Une erreur est survenue. " + (errorData.detail || ""));
@@ -127,18 +148,16 @@ const InscrireEnfant = () => {
 
     return (
         <div className="inscription-container">
-            <div className="header-decoration"></div>
-
             <div className="content-wrapper">
                 <h1>
                     {enfantId === 0 ? (
-                        <>
-                            <span className="icon"></span> Inscrire mon enfant
-                        </>
+                        <span>
+                            Inscrire mon enfant
+                        </span>
                     ) : (
-                        <>
-                            <span className="icon"></span> Modifier les informations de {formData.prenom || "l'enfant"}
-                        </>
+                        <span>
+                            Modifier les informations de {formData.prenom || "l'enfant"}
+                        </span>
                     )}
                 </h1>
 
@@ -147,7 +166,6 @@ const InscrireEnfant = () => {
                         <div className="illustration-frame">
                             <img src="/incrirenfant.jpg" alt="Inscription enfant" className="child-illustration" />
                         </div>
-                        <div className="decoration-element"></div>
                     </div>
 
                     <div className="form-side">
@@ -162,7 +180,6 @@ const InscrireEnfant = () => {
                                     className="floating-input"
                                     required
                                 />
-                                <div className="input-underline"></div>
                             </div>
 
                             <div className="input-group">
@@ -175,7 +192,6 @@ const InscrireEnfant = () => {
                                     className="floating-input"
                                     required
                                 />
-                                <div className="input-underline"></div>
                             </div>
 
                             <div className="input-group">
@@ -190,7 +206,6 @@ const InscrireEnfant = () => {
                                     max="120"
                                     required
                                 />
-                                <div className="input-underline"></div>
                             </div>
 
                             <div className="input-group">
@@ -202,7 +217,6 @@ const InscrireEnfant = () => {
                                     onChange={handleChange}
                                     className="floating-textarea"
                                 />
-                                <div className="input-underline"></div>
                             </div>
 
                             {message && (
@@ -224,15 +238,7 @@ const InscrireEnfant = () => {
                                     type="submit"
                                     className="submit-button"
                                 >
-                                    {enfantId === 0 ? (
-                                        <>
-                                            Inscrire
-                                        </>
-                                    ) : (
-                                        <>
-                                            Enregistrer
-                                        </>
-                                    )}
+                                    {enfantId === 0 ? "Inscrire" : "Enregistrer"}
                                 </button>
                             </div>
                         </form>

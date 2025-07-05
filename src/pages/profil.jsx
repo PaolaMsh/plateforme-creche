@@ -42,6 +42,18 @@ const Profil = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
 
+    // Timer pour les messages
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessages({
+                profil: '',
+                enfants: '',
+                abonnements: ''
+            });
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [messages]);
+
     useEffect(() => {
         const fetchProfil = async () => {
             if (!token) return;
@@ -155,6 +167,23 @@ const Profil = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!profilId) return;
+
+        // Vérification de l'âge (au moins 14 ans)
+        if (formData.dateNaissance) {
+            const dateNaissance = new Date(formData.dateNaissance);
+            const aujourdhui = new Date();
+            let age = aujourdhui.getFullYear() - dateNaissance.getFullYear();
+            const mois = aujourdhui.getMonth() - dateNaissance.getMonth();
+            
+            if (mois < 0 || (mois === 0 && aujourdhui.getDate() < dateNaissance.getDate())) {
+                age--;
+            }
+
+            if (age < 14) {
+                setMessages({ ...messages, profil: 'Vous devez avoir au moins 14 ans pour utiliser ce service' });
+                return;
+            }
+        }
 
         setIsLoading(true);
         try {
@@ -353,7 +382,6 @@ const Profil = () => {
             </div>
 
             <div className="profile-content">
-
                 {activeTab === 'informations' && (
                     <form id="profile-form" onSubmit={handleSubmit} className="info-section">
                         <h3>Informations personnelles</h3>
@@ -394,7 +422,13 @@ const Profil = () => {
                                     name="dateNaissance"
                                     value={formData.dateNaissance}
                                     onChange={handleChange}
+                                    max={new Date(new Date().setFullYear(new Date().getFullYear() - 14)).toISOString().split('T')[0]}
+                                    required
                                 />
+                                {formData.dateNaissance && 
+                                    new Date().getFullYear() - new Date(formData.dateNaissance).getFullYear() < 14 && (
+                                    <p className="error-text">Vous devez avoir au moins 14 ans</p>
+                                )}
                             </div>
 
                             <div className="form-group">
@@ -532,13 +566,6 @@ const Profil = () => {
                                                         title="Voir détails"
                                                     >
                                                         <FontAwesomeIcon icon={faEye} />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDeleteItem(abonnement, 'abonnement')}
-                                                        className="btn-icon danger"
-                                                        title="Annuler"
-                                                    >
-                                                        <FontAwesomeIcon icon={faTrashAlt} />
                                                     </button>
                                                 </td>
                                             </tr>

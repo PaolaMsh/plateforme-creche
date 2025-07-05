@@ -1,77 +1,79 @@
 /* support.css */
-
+main {
+    padding: 0px;
+}
 /* Base Styles */
 .support-container {
     width: 100%;
     margin: 0;
     padding: 0;
-    display: block;
-    margin-top: -40px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 /* Hero Section */
-.support-container .support-hero {
+.support-hero {
     position: relative;
     width: 100%;
-    height: 600px;
+    height: auto;
+    min-height: 400px;
     overflow: hidden;
 }
 
-.support-container .hero-image-container {
+.hero-image-container {
     width: 100%;
     height: 100%;
     position: relative;
 }
 
-.support-container .hero-image {
+.hero-image {
     width: 100%;
     height: 100%;
-    border-radius: 0px;
     object-fit: cover;
     object-position: center;
 }
 
-.support-container .hero-content {
+.hero-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
+    width: 90%;
+    max-width: 1200px;
     text-align: center;
     color: white;
-    padding: 0 20px;
+    padding: 20px;
 }
 
-.support-container .hero-title {
-    font-size: 5rem;
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 5rem);
     font-weight: 700;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-style: italic;
 }
 
-.support-container .search-container {
+.search-container {
     position: relative;
     max-width: 700px;
     margin: 0 auto;
+    width: 100%;
 }
 
-.support-container .search-input {
+.search-input {
     width: 100%;
-    padding: 15px 20px;
-    padding-left: 60px;
+    padding: 12px 20px;
+    padding-left: 50px;
     border-radius: 30px;
     border: none;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.support-container .search-icon {
+.search-icon {
     position: absolute;
-    right: 20px;
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
     color: #777;
@@ -79,66 +81,67 @@
 }
 
 /* FAQ Section */
-.support-container .faq-section {
+.faq-section {
     background-color: white;
-    padding: 80px 0;
+    padding: 60px 20px;
 }
 
-.support-container .faq-container {
+.faq-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
 .support-container .section-title {
-    font-size: 3rem;
+    font-size: clamp(2rem, 4vw, 3rem);
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     font-weight: 700;
     color: #2c3e50;
-    font-style: italic;
 }
 
-.support-container .faq-grid {
+.faq-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 0 10px;
 }
 
-.support-container .faq-card {
+.faq-card {
     background: #f9f9f9;
     border-radius: 8px;
-    padding: 25px;
+    padding: 20px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
 }
 
-.support-container .faq-card:hover {
+.faq-card:hover {
     transform: translateY(-5px);
 }
 
-.support-container .faq-header {
+.faq-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 15px;
+    gap: 15px;
 }
 
-.support-container .faq-icon {
+.faq-icon {
     color: #3498db;
     font-size: 1.5rem;
-    margin-right: 15px;
+    flex-shrink: 0;
+    margin-top: 3px;
 }
 
-.support-container .faq-question {
-    font-size: 1.3rem;
+.faq-question {
+    font-size: 1.1rem;
     font-weight: 600;
     color: #2c3e50;
     margin: 0;
 }
 
-.support-container .faq-answer {
+.faq-answer {
     color: #555;
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.6;
     padding-left: 40px;
 }
@@ -146,32 +149,33 @@
 /* Contact Section */
 .support-container .contact-section {
     background-color: #f0f4f8;
-    padding: 80px 0;
+    padding: 60px 20px;
 }
 
 .support-container .contact-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
 .support-container .contact-description {
     text-align: center;
     max-width: 600px;
-    margin: 0 auto 50px;
-    font-size: 1.2rem;
+    margin: 0 auto 40px;
+    font-size: 1.1rem;
     color: #555;
+    padding: 0 15px;
 }
 
 .support-container .contact-methods {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 0 10px;
 }
 
 .support-container .contact-method {
     background: white;
-    padding: 30px;
+    padding: 25px 20px;
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -179,16 +183,17 @@
 
 .support-container .contact-method h3 {
     color: #2c3e50;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin-bottom: 15px;
 }
 
 .support-container .contact-method p {
     color: #555;
     margin-bottom: 15px;
+    font-size: 0.95rem;
 }
 
-.support-container .chat-button {
+.chat-button {
     background-color: #3498db;
     color: white;
     border: none;
@@ -197,27 +202,77 @@
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s;
+    width: 80%;
+    max-width: 200px;
 }
 
-.support-container .chat-button:hover {
-    background-color: #2980b9
+.chat-button:hover {
+    background-color: #2980b9;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+    .hero-content {
+        top: 50%;
+        padding-top: 40px;
+    }
+    
     .hero-title {
-        font-size: 3rem
+        margin-bottom: 1rem;
     }
     
-    .section-title {
-        font-size: 2rem
+    .search-input {
+        padding: 10px 15px;
+        padding-left: 45px;
     }
     
-    .faq-grid {
-        grid-template-columns: 1fr
+    .search-icon {
+        left: 15px;
     }
     
-    .contact-methods {
-        grid-template-columns: 1fr
+    .faq-grid, .contact-methods {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .faq-card, .contact-method {
+        padding: 20px 15px;
+    }
+    
+    .faq-answer {
+        padding-left: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .support-container .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    
+    .faq-question {
+        font-size: 1rem;
+    }
+    
+    .faq-answer {
+        font-size: 0.9rem;
+        padding-left: 30px;
+    }
+    
+    .support-container .contact-description {
+        font-size: 1rem;
+    }
+    
+    .support-container .contact-method h3 {
+        font-size: 1.2rem;
+    }
+    
+    .chat-button {
+        padding: 8px 15px;
+        font-size: 0.9rem;
     }
 }

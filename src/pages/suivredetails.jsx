@@ -367,6 +367,14 @@ const SuivreDetails = () => {
                                 <p>{abonnement.price} FCFA</p>
                             </div>
                         </div>
+                        
+                        <div className="info-item">
+                            <FiInfo className="info-icon" />
+                            <div>
+                                <h4>Statut</h4>
+                                <p>{abonnement.is_active ? 'Actif' : 'Annulé'}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -448,29 +456,30 @@ const SuivreDetails = () => {
                                         value={abonnement.plan.name}
                                         readOnly
                                     />
+                                </div>
+                                <div className="form-group">
                                     <label>Date de fin actuelle</label>
                                     <input
                                         type="text"
                                         value={formatDate(abonnement.end_date) || 'Non spécifié'}
                                         readOnly
+                                    /></div>
+                                <label>Durée de prolongation</label>
+                                <div className="duration-input">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        placeholder="Durée"
+                                        value={duree}
+                                        onChange={(e) => setDuree(e.target.value)}
+                                        required
                                     />
-                                    <label>Durée de prolongation</label>
-                                    <div className="duration-input">
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            placeholder="Durée"
-                                            value={duree}
-                                            onChange={(e) => setDuree(e.target.value)}
-                                            required
-                                        />
-                                        <select value={unite} onChange={(e) => setUnite(e.target.value)}>
-                                            <option value="heures">Heures</option>
-                                            <option value="jours">Jours</option>
-                                            <option value="semaines">Semaines</option>
-                                            <option value="mois">Mois</option>
-                                        </select>
-                                    </div>
+                                    <select value={unite} onChange={(e) => setUnite(e.target.value)}>
+                                        <option value="heures">Heures</option>
+                                        <option value="jours">Jours</option>
+                                        <option value="semaines">Semaines</option>
+                                        <option value="mois">Mois</option>
+                                    </select>
                                 </div>
                                 <div className="modal-actions">
                                     <button type="button" className="btn-cancel" onClick={() => setShowExtensionForm(false)}>
@@ -499,16 +508,10 @@ const SuivreDetails = () => {
                         <div className="modal-body">
                             <form onSubmit={handleChangeFormula}>
                                 <div className="form-group">
-                                    <label>Formule actuelle</label>
-                                    <input
-                                        type="text"
-                                        value={abonnement.plan.name}
-                                        readOnly
-                                        className="readonly-input"
-                                    />
+                                    <label><strong>Formule actuelle</strong> <br />{abonnement.plan.name}</label>
                                 </div>
                                 <div className="form-group">
-                                    <label>Nouvelle formule</label>
+                                    <label><strong>Nouvelle formule</strong></label>
                                     <select
                                         value={newFormula}
                                         onChange={(e) => setNewFormula(e.target.value)}

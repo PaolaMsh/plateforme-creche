@@ -6,6 +6,15 @@ import '../styles/crechedetails.css';
 
 const DAY_LABELS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
+// Fonction utilitaire pour obtenir la date de fin de semaine (dimanche)
+const getEndOfWeekDate = () => {
+    const today = new Date();
+    const day = today.getDay(); // 0 (dimanche) à 6 (samedi)
+    const diff = today.getDate() - day + (day === 0 ? 0 : 7); // ajuste pour dimanche
+    const endOfWeek = new Date(today.setDate(diff));
+    return endOfWeek.toISOString().split('T')[0];
+};
+
 const Toast = ({ message, type, onClose }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -39,7 +48,7 @@ const CrecheDetails = () => {
     const [selectedPlan, setSelectedPlan] = useState(null);
     const [children, setChildren] = useState([]);
     const [selectedChildren, setSelectedChildren] = useState([]);
-    const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+    const [startDate, setStartDate] = useState(getEndOfWeekDate());
     const [startNow, setStartNow] = useState(true);
     const [loadingChildren, setLoadingChildren] = useState(false);
 
@@ -55,7 +64,7 @@ const CrecheDetails = () => {
     const resetForm = () => {
         setSelectedPlan(null);
         setSelectedChildren([]);
-        setStartDate(new Date().toISOString().split('T')[0]);
+        setStartDate(getEndOfWeekDate());
         setStartNow(true);
     };
 
@@ -88,25 +97,37 @@ const CrecheDetails = () => {
     }, [id, token]);
 
     const handleSubscribeClick = async (plan) => {
+        if (!token) {
+            addToast("Veuillez vous connecter d'abord");
+            return;
+        }
+
         setSelectedPlan(plan);
         setLoadingChildren(true);
 
         try {
             const response = await fetch(`${config.API_BASE_URL}child/`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
             });
 
-            if (!response.ok) throw new Error('Erreur lors du chargement des enfants');
+            if (!response.ok) {
+                throw new Error("Erreur lors du chargement des enfants");
+            }
 
             const data = await response.json();
             setChildren(data.results || []);
             setShowSubscriptionForm(true);
         } catch (err) {
-            addToast(err.message);
+            console.error("Erreur lors de la souscription :", err);
+            addToast(err.message || "Une erreur est survenue");
         } finally {
             setLoadingChildren(false);
         }
     };
+
 
     const handleChildSelection = (childId) => {
         setSelectedChildren(prev =>
@@ -162,7 +183,6 @@ const CrecheDetails = () => {
         }
     };
 
-
     const handleCancelSubscription = () => {
         setShowSubscriptionForm(false);
         resetForm();
@@ -201,8 +221,8 @@ const CrecheDetails = () => {
     if (!nursery) return null;
 
     const mediaURL = config.MEDIA_BASE_URL || '';
-    const exteriorPhoto = nursery.photo_exterior ? `${mediaURL}${nursery.photo_exterior}` : '/blanc.jpg';
-    const interiorPhoto = nursery.photo_interior ? `${mediaURL}${nursery.photo_interior}` : '/blanc.jpg';
+    const exteriorPhoto = nursery.photo_exterior ? `${nursery.photo_exterior}` : '/blanc.jpg';
+    const interiorPhoto = nursery.photo_interior ? `${nursery.photo_interior}` : '/blanc.jpg';
 
     return (
         <div className="creche-details-container">
@@ -247,7 +267,6 @@ const CrecheDetails = () => {
                 <h2 className="section-title">Présentation</h2>
                 <div className="info-card">
                     <p className="description-text">{nursery.information || 'Cette crèche ne dispose pas encore de description.'}</p>
-
                     <div className="info-grid">
                         <div className="info-item">
                             <span className="info-label">Statut juridique</span>
@@ -281,7 +300,6 @@ const CrecheDetails = () => {
 
             <section className="plans-section">
                 <h2 className="section-title">Nos formules d'abonnement</h2>
-
                 {plans.length === 0 ? (
                     <div className="no-plans">
                         <p>Aucune formule disponible actuellement.</p>
@@ -303,7 +321,6 @@ const CrecheDetails = () => {
                                     className="subscribe-button"
                                 >
                                     Souscrire
-                                    <i className="arrow-icon"></i>
                                 </button>
                             </div>
                         ))}
@@ -320,87 +337,64 @@ const CrecheDetails = () => {
                         >
                             &times;
                         </button>
-
                         <h2>Souscription à la formule {selectedPlan.name}</h2>
-
                         <form onSubmit={handleSubmitSubscription}>
                             <div className="form-group">
                                 <label>Période de validité:</label>
-                                <div>{selectedPlan.duration}</div>
+                                <div className="plan-duration-display">{selectedPlan.duration}</div>
                             </div>
 
                             <div className="form-group">
-                                <label>Début de l'abonnement:</label>
-                                <div className='radios'>
-                                    <div className='radio'>
+                                <h3>Début de l'abonnement:</h3>
+                                <div className="radios">
+                                    <div className="radio-option">
                                         <input
                                             type="radio"
                                             id="startNow"
                                             checked={startNow}
                                             onChange={() => setStartNow(true)}
                                         />
-                                        <label htmlFor="startNow">
-                                            Immédiatement
-                                        </label>
+                                        <label htmlFor="startNow">Immédiatement</label>
                                     </div>
-                                    <div className='radio'>
+                                    <div className="radio-option">
                                         <input
                                             type="radio"
                                             id="startLater"
                                             checked={!startNow}
                                             onChange={() => setStartNow(false)}
                                         />
-                                        <label htmlFor="startLater">
-                                            À une date ultérieure
-                                        </label>
+                                        <label htmlFor="startLater">À une date ultérieure</label>
                                     </div>
                                 </div>
 
                                 {!startNow && (
-                                    <input
-                                        type="date"
-                                        value={startDate}
-                                        onChange={(e) => setStartDate(e.target.value)}
-                                        min={new Date().toISOString().split('T')[0]}
-                                        required
-                                    />
+                                    <div className="date-selection">
+                                        <p className="date-info">
+                                            L'abonnement débutera à partir du {getEndOfWeekDate()} (dimanche prochain) ou après
+                                        </p>
+                                        <input
+                                            type="date"
+                                            className="date-input"
+                                            value={startDate}
+                                            onChange={(e) => setStartDate(e.target.value)}
+                                            min={getEndOfWeekDate()}
+                                            required
+                                        />
+                                    </div>
                                 )}
                             </div>
 
                             <div className="form-group">
-                                <label>Sélectionnez les enfants:</label>
+                                <h3>Sélectionnez les enfants:</h3>
                                 {loadingChildren ? (
-                                    <div style={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        height: '100vh',
-                                        backgroundColor: 'rgba(255, 255, 255, 0.8)'
-                                    }}>
-                                        <div style={{ textAlign: 'center' }}>
-                                            <div style={{
-                                                width: '50px',
-                                                height: '50px',
-                                                border: '5px solid #f3f3f3',
-                                                borderTop: '5px solid #3f51b5',
-                                                borderRight: '5px solid #3f51b5',
-                                                borderRadius: '50%',
-                                                animation: 'spin 1s linear infinite',
-                                                margin: '0 auto'
-                                            }} />
-                                            <p style={{
-                                                marginTop: '20px',
-                                                color: '#3f51b5',
-                                                fontFamily: 'Arial, sans-serif',
-                                                fontSize: '1.2rem',
-                                                fontWeight: '500'
-                                            }}>Chargement des enfants...</p>
-                                        </div>
+                                    <div className="loading-children">
+                                        <div className="loading-spinner small"></div>
+                                        <p>Chargement des enfants...</p>
                                     </div>
                                 ) : children.length > 0 ? (
                                     <div className="children-checkboxes">
                                         {children.map(child => (
-                                            <div key={child.id} className="child-checkbox">
+                                            <div key={child.id} className="child-option">
                                                 <input
                                                     type="checkbox"
                                                     id={`child-${child.id}`}
@@ -408,15 +402,15 @@ const CrecheDetails = () => {
                                                     onChange={() => handleChildSelection(child.id)}
                                                 />
                                                 <label htmlFor={`child-${child.id}`}>
-                                                    {child.first_name} {child.last_name} ({child.age} mois)
+                                                    {child.first_name} {child.last_name}
                                                 </label>
                                             </div>
                                         ))}
                                     </div>
                                 ) : (
                                     <p className="no-children-message">
-                                        Aucun enfant enregistré. <br />
-                                        Veuillez <Link to="/inscrireenfant/0">ajouter un enfant</Link> avant de souscrire.
+                                        Vous n'avez aucun enfant enregistré.<br />
+                                        Veuillez <Link to="/inscrireenfant/0">ajouter un enfant</Link> avant de souscrire à un abonnement.
                                     </p>
                                 )}
                             </div>
